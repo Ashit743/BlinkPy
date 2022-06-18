@@ -96,8 +96,6 @@ def BlinkCountDetector():
                     if tt>3:  #SECONDS
                         if blinkCounter<100:
                             Notification1(blinkCounter)
-                            Notification2()
-
                         now=after
                         blinkCounter=0
                         flag_+=1
