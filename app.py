@@ -1,3 +1,4 @@
+from email import message
 from socket import timeout
 from flask import Flask,render_template,Response,url_for
 import cv2
@@ -22,15 +23,23 @@ def about():
 def help():
     return render_template('help.html')
 
-def Notification1(t):
-        notification.notify(
-            title='Blink!',
-            message="You have blinked " + t + " times, Blink more ",
-            app_icon = None,
-            timeout=1
-        )
-        
+def Notification1(t): 
+    notification.notify(
+        title='Blink',
+        message='Dear Developer its time to blink!',
+        app_icon=None,
+        timeout=3
+    )
 
+def Notification2(): 
+    notification.notify(
+        title='Relax!',
+        message='Take some time off, you are working hard enough!',
+        app_icon=None,
+        timeout=3
+    )
+
+        
 
 def BlinkCountDetector():
                 cap = cv2.VideoCapture(0)
@@ -40,6 +49,7 @@ def BlinkCountDetector():
                 blinkCounter = 0
                 cnt = 0
                 now = dt.now()
+                flag_=0
                 
                 while True:
                     success,img = cap.read()
@@ -60,36 +70,54 @@ def BlinkCountDetector():
                         
                     # cv2.line(img,leftUp,leftDown,(0,200,0),3)
                         #cv2.line(img,leftLeft,leftRight,(0,200,0),3)
-                    try:
-                        ratio = (lengthVer/lengthHor)*100
-                        ratioList.append(ratio)
-                        if len(ratioList)>3:
-                            ratioList.pop(0)
-                        ratioAvg = sum(ratioList)/len(ratioList)
-                        if ratioAvg<35 and cnt==0:
-                            blinkCounter+=1
-                            cnt = 1
-                        if cnt!=0:
-                                cnt+=1
-                                if cnt>10:
-                                    cnt=0
-                    except Exception:
-                        pass
+                        try:
+                            ratio = (lengthVer/lengthHor)*100
+                            ratioList.append(ratio)
+                            if len(ratioList)>3:
+                                ratioList.pop(0)
+                            ratioAvg = sum(ratioList)/len(ratioList)
+                            if ratioAvg<35 and cnt==0:
+                                blinkCounter+=1
+                                cnt = 1
+                            if cnt!=0:
+                                    cnt+=1
+                                    if cnt>10:
+                                        cnt=0
+                        except Exception:
+                            pass
                     cvzone.putTextRect(img,f'Blink Count {blinkCounter}',(0,100))
                     (flag,encodedImage) = cv2.imencode(".jpg",img)
                     if not flag:
                         continue
                     yield(b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' + bytearray(encodedImage) + b'\r\n')
                     cv2.waitKey(25)
-                    after = dt.after()
-                    print(after-now)
+                    after = dt.now()
+                    tt = (after-now).total_seconds()
+                    if tt>3:  #SECONDS
+                        if blinkCounter<100:
+                            Notification1(blinkCounter)
+                            Notification2()
+
+                        now=after
+                        blinkCounter=0
+                        flag_+=1
+                    if flag_>4:
+                        print("entered")
+                        flag_=0
+                        Notification2()
+                    print(flag_)
+                    
+                    #print(tt,blinkCounter)
+                            
+
+                    
+                    
                     
 
 
 
-
-                    now = after
-                    print()
+                        
+                    
 
                     
 
