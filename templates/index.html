@@ -1,0 +1,30 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{url_for('static',filename='css/main.css')}}">
+    <link rel="stylesheet" href="{{url_for('static',filename='js/main.js')}}">
+    <title>Document</title>
+</head>
+<header>
+    <h1>Blink</h1>
+  
+    <div >
+      <a href="/">blink</a>
+      <a href="/about">about</a>
+      <a href="/help">help</a>
+    </div>
+  </header>
+<body>
+    <div class="main-content">
+        <img src="{{ url_for('video_feed')}}">
+    </div>
+    <h2>Blink Counter <a >every 5 min</a></h2> <h2 id="blinkkk">0</h2>
+</body>
+<footer>
+    <p>Version 1.0.0</p>
+  </footer> 
+</html>
