@@ -8,6 +8,7 @@ from matplotlib.pyplot import title
 from plyer import notification
 from datetime import datetime as dt
 import os
+import json
 
                         
 app = Flask(__name__)
@@ -86,7 +87,7 @@ def BlinkCountDetector():
                                         cnt=0
                         except Exception:
                             pass
-                    cvzone.putTextRect(img,f'Blink Count {blinkCounter}',(0,100))
+                    cv2.putText(img,f'Blink Count {blinkCounter}',(10,100), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (36,255,12), 2)
                     (flag,encodedImage) = cv2.imencode(".jpg",img)
                     if not flag:
                         continue
@@ -94,18 +95,16 @@ def BlinkCountDetector():
                     cv2.waitKey(25)
                     after = dt.now()
                     tt = (after-now).total_seconds()
-                    if tt>3:  #SECONDS
+                    if tt>300:  #SECONDS
                         if blinkCounter<100:
                             Notification1(blinkCounter)
                         now=after
                         blinkCounter=0
                         flag_+=1
                     if flag_>4:
-                        print("entered")
                         flag_=0
                         Notification2()
-                    print(flag_)
-                    
+
                     #print(tt,blinkCounter)
                             
 
