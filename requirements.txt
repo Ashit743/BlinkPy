@@ -3,4 +3,4 @@ Flask==2.1.2
 matplotlib==3.5.2
 opencv_python==4.6.0.66
 plyer==2.0.0
-gunicorn
+gunicorn==20.1.0
