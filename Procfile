@@ -1,2 +1,2 @@
-web: gunicorn  -b HOST:PORT app:app
+web: gunicorn app:app
 
